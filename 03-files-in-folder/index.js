@@ -9,7 +9,9 @@ fsPromises.readdir(pathToDir, { withFileTypes: true }).then((files) => {
     if (file.isFile()) {
       const pathToFile = path.join(__dirname, 'secret-folder', file.name);
       fs.stat(pathToFile, (err, stats) => {
-        const [name, extension] = file.name.split('.');
+        const fileNameArr = file.name.split('.');
+        const extension = fileNameArr.pop();
+        const name = fileNameArr.join('.');
         console.log(`${name} - ${extension} - ${stats.size}b`);
       });
     }
