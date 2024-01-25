@@ -1,14 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { stdin, stdout, exit } = process;
+const { stdin, exit } = process;
+
 const pathToFile = path.join(__dirname, 'text.txt');
-const ws = fs.createWriteStream(pathToFile);
+const ws = fs.createWriteStream(pathToFile, { encoding: 'utf8' });
 const finishProgram = () => {
-  stdout.write('Good buy!');
+  console.log('Good buy!');
   exit();
 };
-stdout.write('Write your text\n');
+process.on('SIGINT', () => finishProgram());
+console.log('Write your text\n');
 stdin.on('data', (data) => {
   data.toString().trim() === 'exit' ? finishProgram() : ws.write(data)
 });
-process.on('SIGINT', () => finishProgram());
